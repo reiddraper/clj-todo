@@ -15,5 +15,17 @@
       (formatters/list-json-serializer list-contents)
       (formatters/generate-application-template))))
 
+(defn handle-put
+  [req]
+  (let [list-id (get-in req [:request :list-id])
+        list-ref (get-in req [:request :state])
+        body (slurp (get-in req [:request :body]))
+        data (formatters/deserializer body)]
+    (do
+      (model/put-list! list-ref list-id (get-in data [:list :items]))
+      true)))
+
 (def resource (liberator/resource :handle-ok handle-ok
-                                  :available-media-types ["text/html"]))
+                                  :available-media-types ["text/html"]
+                                  :method-allowed? (liberator/request-method-in :get :put)
+                                  :put! handle-put))

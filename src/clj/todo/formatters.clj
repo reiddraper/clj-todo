@@ -12,6 +12,11 @@
   "Given a series of lists, generate JSON representing the lists."
   (cheshire/generate-string {:lists lists}))
 
+(defn deserializer
+  [object-or-list]
+  ;; convert key strings to keywords
+  (cheshire/parse-string object-or-list true))
+
 (defn- prepare-preload [json]
   "Prepare preload data by wrapping in a IIFE."
   (str "var preload = (function() { return JSON.parse('" json "'); })();"))
