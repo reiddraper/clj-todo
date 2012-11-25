@@ -10,3 +10,4 @@ pom.xml
 .lein-plugins
 .lein-git-deps
 .lein-cljsbuild-compiler-*
+resources/public/application.js
