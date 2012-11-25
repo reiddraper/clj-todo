@@ -11,6 +11,11 @@
   []
   (atom {}))
 
+(defn get-lists
+  "Return all of the lists."
+  [list-ref]
+  (deref list-ref))
+
 (defn get-list
   "Get a list based on list id from list-ref.
   If the list doesn't exist, return an empty vector"
