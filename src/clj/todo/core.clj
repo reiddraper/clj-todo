@@ -13,5 +13,4 @@
   (resource :handle-ok (fn [req] (str "hello, the state is" (get-in req [:request :state])))
             :available-media-types ["text/plain"]))
 
-(def handler (routes (ANY "/" [] (add-state home))
-                     (compojure.route/files "/"  {:root "resources/public"})))
+(def handler (routes (ANY "/" [] (add-state home))))
