@@ -23,11 +23,10 @@
       [:head
        [:meta {:charset "utf-8"}]
        [:title "Todo"]
-       [:script "var CLOSURE_NO_DEPS = true;"]]
+       [:script {:type "text/javascript"} "var CLOSURE_NO_DEPS = true;"]]
       [:body
        [:script {:type "text/javascript"
                  :src "application.js"}]
        [:script {:type "text/javascript"
                  :id "preload"} (prepare-preload preload)]
-       [:script {:type "text/javascript"
-                 :src "todo.application.main();"}]]]))
+       [:script {:type "text/javascript"} "todo.application.main();"]]]))
