@@ -1,6 +1,5 @@
 (ns todo.list-resource
-  (:use
-    [compojure.core :as compojure :only [ANY routes]])
+  (:use [compojure.core :as compojure :only [ANY routes]])
   (:require compojure.route
             [liberator.core :as liberator]
             [todo.formatters :as formatters]
@@ -10,10 +9,12 @@
   [req]
   (let [list-id (get-in req [:request :list-id])
         list-ref (get-in req [:request :state])
-        list-contents (model/get-list list-ref list-id)]
-    (-> list-id
-      (formatters/list-json-serializer list-contents)
-      (formatters/generate-application-template))))
+        list-contents (model/get-list list-ref list-id)
+        content-type (get-in req [:representation :media-type])
+        json-response (formatters/list-json-serializer list-id list-contents)]
+    (case content-type
+      "application/json" json-response
+      "text/html" (formatters/generate-application-template json-response))))
 
 (defn handle-put
   [req]
@@ -26,6 +27,7 @@
       true)))
 
 (def resource (liberator/resource :handle-ok handle-ok
-                                  :available-media-types ["text/html"]
+                                  :available-media-types ["text/html"
+                                                          "application/json"]
                                   :method-allowed? (liberator/request-method-in :get :put)
                                   :put! handle-put))

@@ -3,7 +3,9 @@
     [compojure.core :as compojure :only [ANY routes]]
     [liberator.core :only [resource]])
   (:require compojure.route
+            [todo.home-resource :as home-resource]
             [todo.list-resource :as list-resource]
+            [todo.lists-resource :as lists-resource]
             [todo.model :as model]))
 
 (defn- middleware-helper
@@ -20,12 +22,6 @@
   [k v]
   (middleware-helper #(assoc % k v)))
 
-(def home
-  (resource :handle-ok (fn [req]
-                         (str "hello, the state is "
-                              (get-in req [:request :state])))
-            :available-media-types ["text/plain"]))
-
 (defn list-handler
   [list-id]
   ((route-var-helper :list-id list-id) list-resource/resource))
@@ -34,8 +30,9 @@
   []
   (let [state (model/create-list-state)
         req-with-state (add-state state)]
-    (routes (ANY "/" [] (req-with-state home))
-            (ANY "/list/:id" [id] (req-with-state (list-handler id)))
+    (routes (ANY "/" [] (req-with-state home-resource/resource))
+            (ANY "/lists" [] (req-with-state lists-resource/resource))
+            (ANY "/lists/:id" [id] (req-with-state (list-handler id)))
             (compojure.route/files "/"  {:root "resources/public"}))))
 
 (def handler (create-handler))
