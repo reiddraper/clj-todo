@@ -35,7 +35,7 @@
   (let [state (model/create-list-state)
         req-with-state (add-state state)]
     (routes (ANY "/" [] (req-with-state home))
-            (ANY "/list/:id" [id] (req-with-state (list-handler id)))
+            (ANY "/lists/:id" [id] (req-with-state (list-handler id)))
             (compojure.route/files "/"  {:root "resources/public"}))))
 
 (def handler (create-handler))
