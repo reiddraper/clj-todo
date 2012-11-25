@@ -6,4 +6,5 @@
 
 (defn main []
   "Start the application."
-  (.log js/console "Boo!"))
+
+  (.log js/console "Starting the application."))

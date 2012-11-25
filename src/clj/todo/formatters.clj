@@ -14,7 +14,7 @@
 
 (defn- prepare-preload [json]
   "Prepare preload data by wrapping in a IIFE."
-  (str "var preload = (function() { return JSON.parse(\"" json "\"); })();"))
+  (str "var preload = (function() { return JSON.parse('" json "'); })();"))
 
 (defn generate-application-template [json]
   "Generate the application template."
@@ -23,11 +23,15 @@
       [:head
        [:meta {:charset "utf-8"}]
        [:title "Todo"]
-       [:script "var CLOSURE_NO_DEPS = true;"]]
+       [:script {:type "text/javascript"} "var CLOSURE_NO_DEPS = true;"]]
       [:body
+       [:h1 "Todo"]
+       [:h2 "Lists"]
+       [:div {:id "lists"}]
+       [:h2 "Current List"]
+       [:div {:id "list"}]
        [:script {:type "text/javascript"
-                 :src "application.js"}]
+                 :src "/application.js"}]
        [:script {:type "text/javascript"
                  :id "preload"} (prepare-preload json)]
-       [:script {:type "text/javascript"
-                 :src "todo.application.main();"}]]]))
+       [:script {:type "text/javascript"} "todo.application.main();"]]]))
