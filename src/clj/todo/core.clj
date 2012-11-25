@@ -4,6 +4,7 @@
     [liberator.core :only [resource]])
   (:require compojure.route
             [todo.list-resource :as list-resource]
+            [todo.lists-resource :as lists-resource]
             [todo.model :as model]))
 
 (defn- middleware-helper
@@ -35,6 +36,7 @@
   (let [state (model/create-list-state)
         req-with-state (add-state state)]
     (routes (ANY "/" [] (req-with-state home))
+            (ANY "/lists" [] (req-with-state lists-resource/resource))
             (ANY "/lists/:id" [id] (req-with-state (list-handler id)))
             (compojure.route/files "/"  {:root "resources/public"}))))
 
